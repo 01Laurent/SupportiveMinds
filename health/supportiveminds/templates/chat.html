@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <h2 class="my-4">AI Chat Support</h2>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="user_input">Ask for help</label>
+        <input type="text" class="form-control" id="user_input" name="user_input">
+      </div>
+      <button type="submit" class="btn btn-dark">Send</button>
+    </form>
+    {% if bot_response %}
+    <div class="alert alert-info mt-4">
+      <strong>AI Response:</strong> {{ bot_response }}
+    </div>
+    {% endif %}
+  </div>
+
+{% endblock %}
+  

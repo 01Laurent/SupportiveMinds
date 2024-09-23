@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+  
+  <div class="container mt-5">
+    <div class="jumbotron text-center">
+      <h1 class="display-4">Welcome to SupportiveMinds</h1>
+      <p class="lead">Here to help you stay emotionally healthy and resilient. Chat with our AI or explore mental health resources.</p>
+      <a class="btn btn-warning btn-lg" href="{% url 'chat' %}" role="button">Get Help Now</a>
+    </div>
+  </div>
+  
+{% endblock %}

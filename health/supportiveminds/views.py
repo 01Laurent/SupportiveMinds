@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from .forms import MentalHealthResourceForm
 
 load_dotenv()
-openai.api_key = 'sk-RIZ-MMz-0SvxmaciL7bLB9he4TrRVr485DP4_EN0FNT3BlbkFJRUdvtKPle0v90hYffr7PexjxG4Qipf0IJH2PLG2xQA'
+openai.api_key = 'place your key h'
 
 # Create your views here.
 def home_view(request):

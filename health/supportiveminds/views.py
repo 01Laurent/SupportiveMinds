@@ -1,13 +1,32 @@
 from django.shortcuts import render, redirect
-from .models import MoodEntry, MentalHealthResource
+from .models import MoodEntry, MentalHealthResource, Profile
 import openai
 import os
 from dotenv import load_dotenv
 from django.http import JsonResponse
-from .forms import MentalHealthResourceForm
+from .forms import MentalHealthResourceForm, CustomUserCreationForm
 
 load_dotenv()
-openai.api_key = 'place your key h'
+openai.api_key = ''
+
+def register_view(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Create a corresponding profile for the user
+            Profile.objects.create(
+                user=user,
+                date_of_birth=form.cleaned_data.get('date_of_birth'),
+                phone_number=form.cleaned_data.get('phone_number'),
+                favorite_coping_mechanism=form.cleaned_data.get('favorite_coping_mechanism'),
+                preferred_support_type=form.cleaned_data.get('preferred_support_type')
+            )
+            return redirect('login')
+    else:
+        form = CustomUserCreationForm()
+
+    return render(request, 'register.html', {'form': form})
 
 # Create your views here.
 def home_view(request):

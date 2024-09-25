@@ -1,6 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=15, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+    favorite_coping_mechanism = models.CharField(max_length=255, blank=True)
+    preferred_support_type = models.CharField(max_length=100, choices=[
+        ('online', 'Online Support'),
+        ('in_person', 'In-Person Support'),
+        ('anonymous', 'Anonymous Support')
+    ], default='online')
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
 class MoodEntry(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     mood = models.CharField(max_length=50)

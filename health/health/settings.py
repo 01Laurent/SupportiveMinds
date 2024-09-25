@@ -14,6 +14,9 @@ from pathlib import Path
 import os
 api_key = os.getenv('OPENAI_API_KEY')
 
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'home'
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

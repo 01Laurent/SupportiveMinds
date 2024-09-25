@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Mental Health Awareness Resources</h2>
+
+    <!-- Resource Submission Form -->
+    <form method="post" enctype="multipart/form-data" id="resource-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="text" name="title" class="form-control" placeholder="Resource Title" required>
+        </div>
+        <div class="form-group">
+            <input type="url" name="resource_link" class="form-control" placeholder="Enter the resource link..." required>
+        </div>
+        <div class="form-group">
+            <select name="resource_type" class="form-control" required>
+                <option value="">Select Resource Type</option>
+                <option value="Article">Article</option>
+                <option value="Video">Video</option>
+                <option value="Podcast">Podcast</option>
+                <option value="Website">Website</option>
+                <!-- Add other options as necessary -->
+            </select>
+        </div>
+        <div class="form-group">
+            <textarea name="resource_description" class="form-control" placeholder="Enter a brief description..." rows="2" required></textarea>
+        </div>
+        <div class="form-group">
+            <textarea name="summary" class="form-control" placeholder="Enter a summary..." rows="2"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="text" name="tags" class="form-control" placeholder="Enter tags (comma-separated)">
+        </div>
+        <div class="form-group">
+            <input type="file" name="file_upload" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Share Resource</button>
+    </form>
+
+    <h3 class="mt-4">Shared Resources:</h3>
+    <div id="shared-resources" class="border rounded p-3" style="background-color: #f8f9fa;">
+        {% for resource in resources %}
+            <div class="mb-3">
+                <a href="{{ resource.resource_link }}" target="_blank" class="text-primary">{{ resource.title }}</a>
+                <p>{{ resource.resource_description }}</p>
+                <small>Type: {{ resource.resource_type }}</small>
+                <p><strong>Summary:</strong> {{ resource.summary }}</p>
+                <p><strong>Tags:</strong> {{ resource.tags }}</p>
+                {% if resource.file_upload %}
+                    <p><a href="{{ resource.file_upload.url }}" target="_blank">Download File</a></p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,10 +1,47 @@
 from django.shortcuts import render, redirect
-from .models import MoodEntry, ChatMessage
+from .models import MoodEntry, MentalHealthResource
 import openai
+import os
+from dotenv import load_dotenv
+from django.http import JsonResponse
+from .forms import MentalHealthResourceForm
+
+load_dotenv()
+openai.api_key = 'sk-RIZ-MMz-0SvxmaciL7bLB9he4TrRVr485DP4_EN0FNT3BlbkFJRUdvtKPle0v90hYffr7PexjxG4Qipf0IJH2PLG2xQA'
 
 # Create your views here.
 def home_view(request):
-    return render(request, 'home.html')
+    # Check if the request is a POST request
+    if request.method == 'POST':
+        user_message = request.POST.get('message')
+        print("User message:", user_message)  # Check if the message is received correctly
+
+        try:
+            # Uncomment the following lines to use the OpenAI API
+            # response = openai.ChatCompletion.create(
+            #     model="gpt-3.5-turbo",
+            #     messages=[
+            #         {"role": "system", "content": "You are a helpful assistant."},
+            #         {"role": "user", "content": user_message}
+            #     ]
+            # )
+
+            # ai_response = response.choices[0].message["content"]
+            ai_response = "This is a placeholder response. The OpenAI API quota has been exceeded."
+            print("AI response:", ai_response)  # Check if OpenAI responded correctly
+
+            return JsonResponse({'response': ai_response})
+        except Exception as e:
+            print("Error occurred:", str(e))  # Output the error
+            return JsonResponse({'error': 'Something went wrong.'}, status=500)
+
+    # If it's a GET request, render the home page with resources
+    resources = MentalHealthResource.objects.all().order_by('-created_at')
+    
+    context = {
+        'resources': resources,
+    }
+    return render(request, 'home.html', context)
 
 def mood_tracker(request):
     if request.method == 'POST':
@@ -18,24 +55,24 @@ def mood_tracker(request):
 def resources(request):
     return render(request, 'resources.html')
 
-openai.api_key = 'your-openai-api-key'
-def chat_view(request):
+def resources_view(request):
+    resources = MentalHealthResource.objects.all().order_by('-created_at')
+    
     if request.method == 'POST':
-        user_input = request.POST.get('user_input')
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=user_input,
-            max_tokens=150
-        )
-        bot_response = response.choices[0].text.strip()
-        return render(request, 'chat.html', {'bot_response': bot_response})
+        form = MentalHealthResourceForm(request.POST, request.FILES)  # Include files
+        if form.is_valid():
+            resource = form.save(commit=False)
+            resource.user = request.user  # Associate the resource with the logged-in user
+            resource.save()
+            return redirect('ideas')  # Redirect after successful submission
+    else:
+        form = MentalHealthResourceForm()
+    
+    context = {
+        'resources': resources,
+        'form': form,
+    }
+    return render(request, 'share_ideas.html', context)
 
-    return render(request, 'chat.html')
 
-def get_ai_response(user_message):
-    response = openai.Completion.create(
-        model=ChatMessage,
-        prompt=user_message,
-        max_tokens=150
-    )
-    return response.choices[0].text.strip()
+

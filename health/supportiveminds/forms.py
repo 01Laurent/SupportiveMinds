@@ -7,6 +7,15 @@ class MentalHealthResourceForm(forms.ModelForm):
     class Meta:
         model = MentalHealthResource
         fields = ['title', 'resource_link', 'resource_type', 'resource_description', 'summary', 'tags', 'file_upload']
+    def __init__(self, *args, **kwargs):
+        super(MentalHealthResourceForm, self).__init__(*args, **kwargs)
+        self.fields['title'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Resource Title'})
+        self.fields['resource_link'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Enter the resource link...'})
+        self.fields['resource_type'].widget.attrs.update({'class': 'form-control'})
+        self.fields['resource_description'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Enter a brief description...'})
+        self.fields['summary'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Enter a summary...'})
+        self.fields['tags'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Enter tags (comma-separated)'})
+        self.fields['file_upload'].widget.attrs.update({'class': 'form-control'})
 
 class CustomUserCreationForm(UserCreationForm):
     date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))

@@ -8,32 +8,32 @@
     <form method="post" enctype="multipart/form-data" id="resource-form">
         {% csrf_token %}
         <div class="form-group">
-            <input type="text" name="title" class="form-control" placeholder="Resource Title" required>
+            <label for="{{ form.title.id_for_label }}" class="form-label">Resource Title</label>
+            {{ form.title }}  <!-- Render the input without the class, since it's added in the form class -->
         </div>
         <div class="form-group">
-            <input type="url" name="resource_link" class="form-control" placeholder="Enter the resource link..." required>
+            <label for="{{ form.resource_link.id_for_label }}" class="form-label">Enter the resource link</label>
+            {{ form.resource_link }}
         </div>
         <div class="form-group">
-            <select name="resource_type" class="form-control" required>
-                <option value="">Select Resource Type</option>
-                <option value="Article">Article</option>
-                <option value="Video">Video</option>
-                <option value="Podcast">Podcast</option>
-                <option value="Website">Website</option>
-                <!-- Add other options as necessary -->
-            </select>
+            <label for="{{ form.resource_type.id_for_label }}" class="form-label">Select Resource Type</label>
+            {{ form.resource_type }}
         </div>
         <div class="form-group">
-            <textarea name="resource_description" class="form-control" placeholder="Enter a brief description..." rows="2" required></textarea>
+            <label for="{{ form.resource_description.id_for_label }}" class="form-label">Enter a brief description</label>
+            {{ form.resource_description }}
         </div>
         <div class="form-group">
-            <textarea name="summary" class="form-control" placeholder="Enter a summary..." rows="2"></textarea>
+            <label for="{{ form.summary.id_for_label }}" class="form-label">Enter a summary</label>
+            {{ form.summary }}
         </div>
         <div class="form-group">
-            <input type="text" name="tags" class="form-control" placeholder="Enter tags (comma-separated)">
+            <label for="{{ form.tags.id_for_label }}" class="form-label">Enter tags (comma-separated)</label>
+            {{ form.tags }}
         </div>
         <div class="form-group">
-            <input type="file" name="file_upload" class="form-control">
+            <label for="{{ form.file_upload.id_for_label }}" class="form-label">Upload File</label>
+            {{ form.file_upload }}
         </div>
         <button type="submit" class="btn btn-primary">Share Resource</button>
     </form>
